@@ -6,7 +6,7 @@ Customizable UIControl that replicates inline UIDatePicker.
 
 See `UIInlinePickerDemo/DemoViewController.swift`.
 
-```
+```swift
 inlinePicker = UIInlinePicker(frame: CGRect(x: 10, y: 44, width: 100, height: 34))
 inlinePicker.font = UIFont.systemFont(ofSize: 12)
 inlinePicker.mode = .custom
