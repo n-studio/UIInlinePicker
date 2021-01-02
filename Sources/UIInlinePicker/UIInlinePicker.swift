@@ -127,7 +127,11 @@ open class UIInlinePicker: UIControl {
             self.textField.keyboardType = self.keyboardType
         }
     }
-    open var borderColor: UIColor = .clear
+    open var borderColor: UIColor = .clear {
+        didSet {
+            self.layer.borderColor = self.borderColor.cgColor
+        }
+    }
 
     override public init(frame: CGRect) {
         super.init(frame: frame)

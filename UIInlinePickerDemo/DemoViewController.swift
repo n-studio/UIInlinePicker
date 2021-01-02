@@ -45,6 +45,7 @@ class DemoViewController: UIViewController {
         self.customInlinePicker = UIInlinePicker(frame: CGRect(x: 10, y: 64, width: 100, height: 34))
         self.customInlinePicker?.accessibilityIdentifier = "customInlinePicker"
         self.customInlinePicker?.accessibilityLabel = "customInlinePicker"
+        self.customInlinePicker?.borderColor = .orange
         self.customInlinePicker?.font = UIFont.systemFont(ofSize: 12)
         self.customInlinePicker?.mode = .custom
         self.customInlinePicker?.dataSource = self
