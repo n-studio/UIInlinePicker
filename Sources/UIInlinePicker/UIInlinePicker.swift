@@ -132,6 +132,16 @@ open class UIInlinePicker: UIControl {
             self.layer.borderColor = self.borderColor.cgColor
         }
     }
+    open var borderWidth: CGFloat = 1.5 {
+        didSet {
+            self.layer.borderWidth = self.borderWidth
+        }
+    }
+    open var cornerRadius: CGFloat = 8 {
+        didSet {
+            self.layer.cornerRadius = self.cornerRadius
+        }
+    }
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -147,8 +157,8 @@ open class UIInlinePicker: UIControl {
 
     internal func setupView() {
         self.backgroundColor = .systemGroupedBackground
-        self.layer.cornerRadius = 8
-        self.layer.borderWidth = 1.5
+        self.layer.cornerRadius = self.cornerRadius
+        self.layer.borderWidth = self.borderWidth
         self.layer.borderColor = self.borderColor.cgColor
 
         self.textField.frame = CGRect(x: -1000, y: 0, width: 1, height: 1)
