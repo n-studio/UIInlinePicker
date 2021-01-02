@@ -142,6 +142,7 @@ open class UIInlinePicker: UIControl {
             self.layer.cornerRadius = self.cornerRadius
         }
     }
+    open var adjustsFontSizeToFitWidth: Bool = false
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -162,8 +163,6 @@ open class UIInlinePicker: UIControl {
         self.layer.borderColor = self.borderColor.cgColor
 
         self.textField.frame = CGRect(x: -1000, y: 0, width: 1, height: 1)
-        self.textField.adjustsFontSizeToFitWidth = true
-        self.textField.minimumFontSize = 10.0
         self.textField.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(self.textField)
         self.textField.delegate = self
@@ -475,6 +474,7 @@ extension UIInlinePicker: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         pickerView.subviews.last?.isHidden = true
         let label = UILabel()
+        label.adjustsFontSizeToFitWidth = self.adjustsFontSizeToFitWidth
         label.font = self.font
         if component == 0 && component != pickerView.numberOfComponents - 1 {
             label.textAlignment = .right
