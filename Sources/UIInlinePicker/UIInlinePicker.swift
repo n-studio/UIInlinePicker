@@ -147,12 +147,14 @@ open class UIInlinePicker: UIControl {
         self.layer.borderColor = UIColor.clear.cgColor
 
         self.textField.frame = CGRect(x: -1000, y: 0, width: 1, height: 1)
+        self.textField.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(self.textField)
         self.textField.delegate = self
         self.textField.addTarget(self, action: #selector(textDidBegin), for: .editingDidBegin)
         self.textField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
 
         self.pickerView.frame = CGRect(x: -10, y: -10, width: self.bounds.size.width + 20, height: self.bounds.size.height + 20)
+        self.pickerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.pickerView.backgroundColor = .clear
         self.pickerView.tintColor = .clear
         self.addSubview(self.pickerView)
@@ -220,13 +222,14 @@ open class UIInlinePicker: UIControl {
         for separator in self.separators {
             separator.removeFromSuperview()
         }
+        self.separators = []
         let separatorsCount = count - 1
         if separatorsCount <= 0 {
             return
         }
-        let width = (bounds.size.width - 8) / CGFloat(separatorsCount + 1)
+        let width = (self.bounds.size.width - 8) / CGFloat(separatorsCount + 1)
         for i in 0..<separatorsCount {
-            let separator = UILabel(frame: CGRect(x: 7 + width * CGFloat(i), y: -1, width: width, height: bounds.size.height))
+            let separator = UILabel(frame: CGRect(x: 7 + width * CGFloat(i), y: -1, width: width, height: self.bounds.size.height))
             separator.text = (i == separatorsCount - 1) ? self._decimalSeparator : self._separator
             separator.font = self.font
             separator.textAlignment = .right
