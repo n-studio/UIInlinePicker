@@ -162,6 +162,8 @@ open class UIInlinePicker: UIControl {
         self.layer.borderColor = self.borderColor.cgColor
 
         self.textField.frame = CGRect(x: -1000, y: 0, width: 1, height: 1)
+        self.textField.adjustsFontSizeToFitWidth = true
+        self.textField.minimumFontSize = 10.0
         self.textField.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(self.textField)
         self.textField.delegate = self
