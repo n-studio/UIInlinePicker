@@ -127,6 +127,7 @@ open class UIInlinePicker: UIControl {
             self.textField.keyboardType = self.keyboardType
         }
     }
+    open var borderColor: UIColor = .clear
 
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -144,7 +145,7 @@ open class UIInlinePicker: UIControl {
         self.backgroundColor = .systemGroupedBackground
         self.layer.cornerRadius = 8
         self.layer.borderWidth = 1.5
-        self.layer.borderColor = UIColor.clear.cgColor
+        self.layer.borderColor = self.borderColor.cgColor
 
         self.textField.frame = CGRect(x: -1000, y: 0, width: 1, height: 1)
         self.textField.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -207,7 +208,7 @@ open class UIInlinePicker: UIControl {
         case .ended, .cancelled:
             self.isSelecting = self.textField.isFirstResponder
             if !self.isSelecting {
-                self.layer.borderColor = UIColor.clear.cgColor
+                self.layer.borderColor = self.borderColor.cgColor
                 for separator in self.separators {
                     separator.textColor = self.textColor
                 }
@@ -338,7 +339,7 @@ extension UIInlinePicker: UITextFieldDelegate {
 
     public func textFieldDidEndEditing(_ textField: UITextField) {
         self.isSelecting = false
-        self.layer.borderColor = UIColor.clear.cgColor
+        self.layer.borderColor = self.borderColor.cgColor
         for separator in self.separators {
             separator.textColor = self.textColor
         }
