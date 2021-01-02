@@ -111,6 +111,10 @@ open class UIInlinePicker: UIControl {
             }
             return textFromPickerView(self.pickerView)
         }
+        set {
+            self.textField.text = newValue
+            textDidChange()
+        }
     }
     open var font: UIFont = UIFont.systemFont(ofSize: 20)
     open var textColor: UIColor = .label {

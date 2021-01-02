@@ -98,6 +98,12 @@ class DemoViewController: UIViewController {
         self.view.addSubview(datePicker)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.durationInlinePicker?.text = "1230000"
+    }
+
     @objc func inlinePickerValueDidChange(_ sender: UIInlinePicker) {
         switch(sender) {
         case self.customInlinePicker:
