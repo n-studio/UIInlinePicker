@@ -204,6 +204,7 @@ open class UIInlinePicker: UIControl {
         self.inlineDelegate?.pickerView(self.pickerView, didUpdateCustomEntry: text)
         selectRows(self.pickerView, withValue: text, animated: false)
         self.sendActions(for: .valueChanged)
+        self.sendActions(for: .editingChanged)
     }
 
     @objc internal func handleTap() {
@@ -500,6 +501,7 @@ extension UIInlinePicker: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.textField.text = ""
         self.sendActions(for: .valueChanged)
+        self.sendActions(for: .editingChanged)
     }
 
     internal func textFromPickerView(_ pickerView: UIPickerView) -> String? {
