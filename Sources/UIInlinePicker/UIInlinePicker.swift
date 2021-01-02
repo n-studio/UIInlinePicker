@@ -499,7 +499,9 @@ extension UIInlinePicker: UIPickerViewDataSource {
 extension UIInlinePicker: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         pickerView.subviews.last?.isHidden = true
-        let label = PaddedLabel(withInsets: UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4))
+        let leftPadding: CGFloat = component == 0 ? 4 : 0
+        let rightPadding: CGFloat = component == pickerView.numberOfComponents - 1 ? 4 : 0
+        let label = PaddedLabel(withInsets: UIEdgeInsets(top: 0, left: leftPadding, bottom: 0, right: rightPadding))
         label.adjustsFontSizeToFitWidth = self.adjustsFontSizeToFitWidth
         label.font = self.font
         if component == 0 && component != pickerView.numberOfComponents - 1 {
