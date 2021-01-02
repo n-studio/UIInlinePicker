@@ -37,6 +37,32 @@ public protocol UIInlinePickerDelegate {
     func pickerView(_ pickerView: UIPickerView, didUpdateCustomEntry customEntry: String)
 }
 
+fileprivate class PaddedLabel: UILabel {
+    var insets: UIEdgeInsets
+
+    required init(withInsets insets: UIEdgeInsets) {
+        self.insets = insets
+        super.init(frame: CGRect.zero)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: self.insets))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        get {
+            var contentSize = super.intrinsicContentSize
+            contentSize.height += insets.top + insets.bottom
+            contentSize.width += insets.left + insets.right
+            return contentSize
+        }
+    }
+}
+
 open class UIInlinePicker: UIControl {
     internal var isSelecting: Bool = false
     internal var textField = UITextField()
@@ -473,7 +499,7 @@ extension UIInlinePicker: UIPickerViewDataSource {
 extension UIInlinePicker: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         pickerView.subviews.last?.isHidden = true
-        let label = UILabel()
+        let label = PaddedLabel(withInsets: UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4))
         label.adjustsFontSizeToFitWidth = self.adjustsFontSizeToFitWidth
         label.font = self.font
         if component == 0 && component != pickerView.numberOfComponents - 1 {
