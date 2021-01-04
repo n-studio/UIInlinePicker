@@ -139,7 +139,6 @@ open class UIInlinePicker: UIControl {
         }
         set {
             self.textField.text = newValue
-            textDidChange()
         }
     }
     open var font: UIFont = UIFont.systemFont(ofSize: 20)
