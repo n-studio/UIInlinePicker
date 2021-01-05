@@ -169,6 +169,14 @@ open class UIInlinePicker: UIControl {
     }
     open var adjustsFontSizeToFitWidth: Bool = false
 
+    open func reloadData() {
+        guard let text = self.textField.text else { return }
+        if [.duration, .number, .time].contains(self.mode) {
+            self.textField.text = self.textField.text?.filter("0123456789".contains)
+        }
+        selectRows(self.pickerView, withValue: text, animated: false)
+    }
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -223,12 +231,8 @@ open class UIInlinePicker: UIControl {
 
     @objc internal func textDidChange() {
         guard let text = self.textField.text else { return }
-        if [.duration, .number, .time].contains(self.mode) {
-            self.textField.text = self.textField.text?.filter("0123456789".contains)
-        }
-
+        reloadData()
         self.inlineDelegate?.pickerView(self.pickerView, didUpdateCustomEntry: text)
-        selectRows(self.pickerView, withValue: text, animated: false)
         self.sendActions(for: .valueChanged)
         self.sendActions(for: .editingChanged)
     }
