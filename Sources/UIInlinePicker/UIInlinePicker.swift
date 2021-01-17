@@ -235,6 +235,7 @@ open class UIInlinePicker: UIControl {
         self.inlineDelegate?.pickerView(self.pickerView, didUpdateCustomEntry: text)
         self.sendActions(for: .valueChanged)
         self.sendActions(for: .editingChanged)
+        self.selectRows(self.pickerView, withValue: text, animated: false)
     }
 
     @objc internal func handleTap() {
