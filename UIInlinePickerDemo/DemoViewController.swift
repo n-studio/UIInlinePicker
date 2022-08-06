@@ -82,6 +82,8 @@ class DemoViewController: UIViewController {
         self.moneyInlinePicker?.digitGrouping = .myriadDecimal
         self.moneyInlinePicker?.numberPrecision = 6
         self.moneyInlinePicker?.decimalPrecision = 2
+        self.moneyInlinePicker?.minimumValue = 0.05
+        self.moneyInlinePicker?.maximumValue = 999_9999.99
         self.moneyInlinePicker?.prefix = "$"
         self.moneyInlinePicker?.dataSource = self
         self.moneyInlinePicker?.delegate = self
