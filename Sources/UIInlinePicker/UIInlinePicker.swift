@@ -95,6 +95,8 @@ open class UIInlinePicker: UIControl {
     }
     open var numberPrecision: Int = 6
     open var decimalPrecision: Int = 2
+    open var minimumValue: Decimal?
+    open var maximumValue: Decimal?
     open var prefix: String = ""
     open var suffix: String = ""
     open var separator: String?
@@ -201,6 +203,7 @@ open class UIInlinePicker: UIControl {
         self.textField.delegate = self
         self.textField.addTarget(self, action: #selector(textDidBegin), for: .editingDidBegin)
         self.textField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        self.textField.addTarget(self, action: #selector(textDidEnd), for: .editingDidEnd)
 
         self.pickerView.frame = CGRect(x: -10, y: -10, width: self.bounds.size.width + 20, height: self.bounds.size.height + 20)
         self.pickerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -230,7 +233,24 @@ open class UIInlinePicker: UIControl {
     }
 
     @objc internal func textDidChange() {
+        validateTextForMaximum()
+
         guard let text = self.textField.text else { return }
+        reloadData()
+        self.inlineDelegate?.pickerView(self.pickerView, didUpdateCustomEntry: text)
+        self.sendActions(for: .valueChanged)
+        self.sendActions(for: .editingChanged)
+        self.selectRows(self.pickerView, withValue: text, animated: false)
+    }
+
+    @objc internal func textDidEnd() {
+        guard let originalText = self.textField.text else { return }
+        validateTextForMinimum()
+
+        guard let text = self.textField.text else { return }
+
+        if originalText == text { return }
+
         reloadData()
         self.inlineDelegate?.pickerView(self.pickerView, didUpdateCustomEntry: text)
         self.sendActions(for: .valueChanged)
@@ -358,6 +378,50 @@ open class UIInlinePicker: UIControl {
         }
 
         return integerValue / power % (powerPlusOne / power)
+    }
+
+    internal func validateTextForMinimum() {
+        guard let text = self.textField.text else { return }
+
+        switch self.mode {
+        case .time:
+            return
+        case .duration:
+            return
+        case .number:
+            if let minimumValue = self.minimumValue {
+                let precisionPower = pow(10, self.decimalPrecision)
+                if (Decimal(string: text) ?? 0) / precisionPower < minimumValue {
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    numberFormatter.decimalSeparator = ""
+                    numberFormatter.groupingSeparator = ""
+                    self.textField.text = numberFormatter.string(from: minimumValue as NSNumber)
+                }
+            }
+        default:
+            return
+        }
+    }
+
+    internal func validateTextForMaximum() {
+        guard let text = self.textField.text else { return }
+
+        switch self.mode {
+        case .time:
+            return
+        case .duration:
+            return
+        case .number:
+            if let maximumValue = self.maximumValue {
+                let precisionPower = pow(10, self.decimalPrecision)
+                if (Decimal(string: text) ?? 0) / precisionPower > maximumValue {
+                    self.textField.text = String(text.dropLast())
+                }
+            }
+        default:
+            return
+        }
     }
 }
 
