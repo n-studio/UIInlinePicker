@@ -95,8 +95,20 @@ open class UIInlinePicker: UIControl {
     }
     open var numberPrecision: Int = 6
     open var decimalPrecision: Int = 2
+    internal var defaultMinimumValue: Decimal {
+        0
+    }
+    internal var defaultMaximumValue: Decimal {
+        maximumValueForNumberPrecision(numberPrecision, decimalPrecision)
+    }
     open var minimumValue: Decimal?
     open var maximumValue: Decimal?
+    internal var effectiveMinimumValue: Decimal {
+        [minimumValue ?? defaultMinimumValue, defaultMinimumValue].max()!
+    }
+    internal var effectiveMaximumValue: Decimal {
+        [maximumValue ?? defaultMaximumValue, defaultMaximumValue].min()!
+    }
     open var prefix: String = ""
     open var suffix: String = ""
     open var separator: String?
@@ -413,15 +425,19 @@ open class UIInlinePicker: UIControl {
         case .duration:
             return
         case .number:
-            if let maximumValue = self.maximumValue {
-                let precisionPower = pow(10, self.decimalPrecision)
-                if (Decimal(string: text) ?? 0) / precisionPower > maximumValue {
-                    self.textField.text = String(text.dropLast())
-                }
+            let precisionPower = pow(10, self.decimalPrecision)
+            if (Decimal(string: text) ?? 0) / precisionPower > self.effectiveMaximumValue {
+                self.textField.text = String(text.dropLast())
             }
         default:
             return
         }
+    }
+
+    internal func maximumValueForNumberPrecision(_ numberPrecision: Int, _ decimalPrecision: Int) -> Decimal {
+        let number = Decimal(pow(Double(10), Double(numberPrecision + 1))) - 1
+        let decimal = Decimal(pow(Double(10), Double(decimalPrecision + 1))) - 1
+        return number + decimal / Decimal(pow(Double(10), Double(decimalPrecision)))
     }
 }
 
